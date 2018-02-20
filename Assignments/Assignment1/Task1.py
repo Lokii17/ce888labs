@@ -1,12 +1,13 @@
 from keras.datasets import mnist
 from keras.datasets import cifar10
 import numpy as np
-import pandas as pd 
 
 def create_csv(data, name):
     #scale data and reshape to vektors (arrays)
     (x_train, y_train), (x_test, y_test) = data
     print(x_train.shape)
+
+    #reshape the array. E.g. MNIST from 60000 x 28 x 28 to 60000x785     (28*28=785)
     x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
     x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 
@@ -16,7 +17,6 @@ def create_csv(data, name):
     tasks_n = 3    
     mask = np.arange(len(x_train[0]))
     shuffles = []
-
     #save all data in for_file to convert this array to a file, the y-value is in the last column.
     for_file = np.zeros(shape=(len(y_train)+len(y_test), len(mask)+1))
     #the loop creats n tasks with different shuffeling, the shuffeling is saved in shuffles
@@ -40,7 +40,7 @@ def create_csv(data, name):
         print("shape of for_file:")
         print(for_file.shape)
 
-        #now save everything in an csv file
+        #now save everything in an npy file
         print("start to save")
         np.save(name + str(i+1), for_file)  
         print("file saved")
